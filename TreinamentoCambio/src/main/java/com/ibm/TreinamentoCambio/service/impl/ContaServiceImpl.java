@@ -2,6 +2,8 @@ package com.ibm.TreinamentoCambio.service.impl;
 
 import java.util.Optional;
 
+import javax.persistence.GeneratedValue;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,8 @@ import com.ibm.TreinamentoCambio.exception.ObjetoNaoEncontradoException;
 import com.ibm.TreinamentoCambio.model.Conta;
 import com.ibm.TreinamentoCambio.repository.ContaRepository;
 import com.ibm.TreinamentoCambio.service.ContaService;
+
+import ch.qos.logback.core.net.SyslogOutputStream;
 
 @Service
 public class ContaServiceImpl implements ContaService {
@@ -37,7 +41,6 @@ public class ContaServiceImpl implements ContaService {
 		return contaRepository.save(conta);
 	}
 
-
 	@Override
 	public Conta sacarConta(Long id, Double value) throws Exception {
 		Optional<Conta> contaOptional = contaRepository.findById(id);
@@ -62,6 +65,16 @@ public class ContaServiceImpl implements ContaService {
 		conta.setValue(new Double(ret).doubleValue());
 		contaRepository.save(conta);
 		return conta.toString();
+	}
+	
+	@Override
+	public Conta depositaConta(Long id, Double value) throws Exception {
+		Optional <Conta> contaOptional = contaRepository.findById(id);
+		Conta conta = contaOptional.get();
+		conta.setValue(conta.getSaldo() + value);
+		
+		return contaRepository.save(conta);
+		
 	}
 
 	@Override
