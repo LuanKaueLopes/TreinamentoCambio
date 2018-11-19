@@ -5,8 +5,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ibm.TreinamentoCambio.exception.ObjetoContaVazia;
-import com.ibm.TreinamentoCambio.exception.ObjetoNaoEncontradoException;
 import com.ibm.TreinamentoCambio.model.Conta;
 import com.ibm.TreinamentoCambio.repository.ContaRepository;
 import com.ibm.TreinamentoCambio.service.ContaService;
@@ -21,15 +19,15 @@ public class ContaServiceImpl implements ContaService {
 		this.contaRepository = contaRepository;
 	}
 	@Override
-	public Conta buscaConta(Long id) {
+	public Conta buscaConta(Long id) throws Exception {
 		Optional<Conta> contaOptinal = contaRepository.findById(id);
-		return contaOptinal.orElseThrow(()-> new ObjetoNaoEncontradoException("Não foi possivel localizar o contato id: "+id ));
+		return contaOptinal.orElseThrow(()-> new Exception("Não foi possivel localizar o contato id: "+id ));
 	}
 
 	@Override
-	public Conta criaConta(Conta conta) {
+	public Conta criaConta(Conta conta) throws Exception {
 		if(conta == null)
-			throw new  ObjetoContaVazia("Conta vazia");
+			throw new  Exception ("Conta vazia");
 	    return	contaRepository.save(conta);
 		
 	}
@@ -38,8 +36,9 @@ public class ContaServiceImpl implements ContaService {
 		Optional<Conta> contaOptional = contaRepository.findById(id);
 		Conta conta = contaOptional.get();
 		conta.setValue(conta.getValue() - value);
-        return contaRepository.save(conta);
-	}
+		return contaRepository.save(conta);	
+		}
+	
 	@Override
 	public String changeCoin(int id) {
 		// TODO Auto-generated method stub
