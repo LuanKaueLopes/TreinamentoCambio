@@ -22,8 +22,9 @@ public class ContaServiceImpl implements ContaService {
 	}
 
 	@Override
-	public Conta buscaConta(Long id) {
+	public Conta buscaConta(Long id)  {
 		Optional<Conta> contaOptinal = contaRepository.findById(id);
+
 		return contaOptinal
 				.orElseThrow(() -> new ObjetoNaoEncontradoException("Não foi possivel localizar o contato id: " + id));
 	}
@@ -35,13 +36,16 @@ public class ContaServiceImpl implements ContaService {
 		return contaRepository.save(conta);
 	}
 
+
 	@Override
 	public Conta sacarConta(Long id, Double value) throws Exception {
 		Optional<Conta> contaOptional = contaRepository.findById(id);
 		Conta conta = contaOptional.get();
 		conta.setValue(conta.getValue() - value);
-        return contaRepository.save(conta);
-	}
+		
+		return contaRepository.save(conta);	
+		}
+
 	@Override
 	public String changeCoin(int id) {
 		// TODO Auto-generated method stub

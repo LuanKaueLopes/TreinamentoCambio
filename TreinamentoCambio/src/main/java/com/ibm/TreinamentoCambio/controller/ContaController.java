@@ -36,9 +36,9 @@ public class ContaController {
 		return contaService.deletarConta(id);
 	}
 
-	@RequestMapping(value="/{id}",method = RequestMethod.PUT)
-	public String sacarConta(@RequestBody Long id, double value) throws Exception {
-		return ""+ contaService.sacarConta(id, value);
+	@RequestMapping(value="/sacar/{id}",method = RequestMethod.PUT)
+	public String sacarConta(@PathVariable Long id, @RequestBody Conta conta) throws Exception {
+		return ""+ contaService.sacarConta(id, conta.getValue());
 	}
 
 }
