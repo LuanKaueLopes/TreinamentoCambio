@@ -30,5 +30,12 @@ public class ContaController {
 	public String criaConta(@RequestBody Conta conta) throws Exception {
 		return ""+ contaService.criaConta(conta);
 	}
+	
+	@RequestMapping(method = RequestMethod.PUT)
+	public String depositaConta(@RequestBody double value) throws Exception {
+		return ""+ contaService.depositaConta(value);
+	}
+	
+	
 
 }
