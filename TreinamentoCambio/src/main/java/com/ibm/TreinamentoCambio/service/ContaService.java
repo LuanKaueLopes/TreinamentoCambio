@@ -4,8 +4,16 @@ import com.ibm.TreinamentoCambio.model.Conta;
 
 public interface ContaService {
 
-	Conta buscaConta(Long id) throws Exception;
-	Conta criaConta(Conta conta) throws Exception;
+	Conta buscaConta(Long id);
+
+	Conta criaConta(Conta conta);
+
+	String deletarConta(Long id);
+
 	String changeCoin(int id);
+
 	Conta depositaConta(Double value) throws Exception;
+
+	Conta sacarConta(Long id, Double value) throws Exception;
+
 }
