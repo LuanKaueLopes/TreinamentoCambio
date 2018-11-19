@@ -6,6 +6,7 @@ public interface ContaService {
 
 	Conta buscaConta(Long id);
 	Conta criaConta(Conta conta);
+	String deletarConta(Long id);
 	String changeCoin(int id);
 	
 }

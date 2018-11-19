@@ -15,20 +15,25 @@ import com.ibm.TreinamentoCambio.service.ContaService;
 public class ContaController {
 
 	private ContaService contaService;
-	
+
 	@Autowired
 	public ContaController(ContaService contaService) {
 		this.contaService = contaService;
 	}
-	
-	@RequestMapping(value="/{id}",method = RequestMethod.GET)
-	public String buscaConta(@PathVariable Long id) throws Exception {
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public String buscaConta(@PathVariable Long id) {
 		return contaService.buscaConta(id) + "";
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
-	public String criaConta(@RequestBody Conta conta) throws Exception {
-		return ""+ contaService.criaConta(conta);
+	public String criaConta(@RequestBody Conta conta) {
+		return "" + contaService.criaConta(conta);
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public String deleteConta(@PathVariable Long id) {
+		return contaService.deletarConta(id);
 	}
 
 }
