@@ -36,9 +36,10 @@ public class ContaServiceImpl implements ContaService {
 		Optional<Conta> contaOptional = contaRepository.findById(id);
 		Conta conta = contaOptional.get();
 		conta.setValue(conta.getValue() - value);
+		
 		return contaRepository.save(conta);	
 		}
-	
+
 	@Override
 	public String changeCoin(int id) {
 		// TODO Auto-generated method stub
