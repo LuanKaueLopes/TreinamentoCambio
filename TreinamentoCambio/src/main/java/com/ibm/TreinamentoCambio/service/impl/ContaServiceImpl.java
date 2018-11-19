@@ -34,6 +34,13 @@ public class ContaServiceImpl implements ContaService {
 		
 	}
 	@Override
+	public Conta sacarConta(Long id, Double value) throws Exception {
+		Optional<Conta> contaOptional = contaRepository.findById(id);
+		Conta conta = contaOptional.get();
+		conta.setValue(conta.getValue() - value);
+        return contaRepository.save(conta);
+	}
+	@Override
 	public String changeCoin(int id) {
 		// TODO Auto-generated method stub
 		return null;

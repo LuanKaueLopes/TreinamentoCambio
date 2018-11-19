@@ -31,4 +31,9 @@ public class ContaController {
 		return ""+ contaService.criaConta(conta);
 	}
 
+	@RequestMapping(value="/{id}",method = RequestMethod.PUT)
+	public String sacarConta(@RequestBody Long id, double value) throws Exception {
+		return ""+ contaService.sacarConta(id, value);
+	}
+
 }
