@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ibm.TreinamentoCambio.exception.ObjetoNaoEncontradoException;
 import com.ibm.TreinamentoCambio.model.Conta;
 import com.ibm.TreinamentoCambio.repository.ContaRepository;
 import com.ibm.TreinamentoCambio.service.ContaService;
@@ -19,15 +20,15 @@ public class ContaServiceImpl implements ContaService {
 		this.contaRepository = contaRepository;
 	}
 	@Override
-	public Conta buscaConta(Long id) throws Exception {
+	public Conta buscaConta(Long id) {
 		Optional<Conta> contaOptinal = contaRepository.findById(id);
-		return contaOptinal.orElseThrow(()-> new Exception("Não foi possivel localizar o contato id: "+id ));
+		return contaOptinal.orElseThrow(()-> new ObjetoNaoEncontradoException("Não foi possivel localizar o contato id: "+id ));
 	}
 
 	@Override
-	public Conta criaConta(Conta conta) throws Exception {
+	public Conta criaConta(Conta conta) {
 		if(conta == null)
-			throw new  Exception ("Conta vazia");
+			throw new  ObjetoNaoEncontradoException("Conta vazia");
 	    return	contaRepository.save(conta);
 		
 	}
