@@ -12,6 +12,7 @@ import com.ibm.TreinamentoCambio.controller.Resposta;
 
 @ControllerAdvice
 public class MyExceptionHandler extends ResponseEntityExceptionHandler {
+	
 	@ExceptionHandler(value = { ObjetoNaoEncontradoException.class })
 	protected ResponseEntity<Object> handleObjetoNaoEcontratoException(RuntimeException ex, WebRequest request) {
 		ObjetoNaoEncontradoException exception = (ObjetoNaoEncontradoException) ex;
@@ -19,7 +20,7 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, resposta, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 	
-	@ExceptionHandler(value = {ObjetoNaoEncontradoException.class})
+	@ExceptionHandler(value = {ObjetoContaVazia.class})
 	protected ResponseEntity<Object> handleObjetoContaVazia(RuntimeException ex, WebRequest request) {
 		ObjetoNaoEncontradoException exception = (ObjetoNaoEncontradoException) ex;
 		Resposta resposta = new Resposta(exception.getCode(), exception.getMessage(), null);

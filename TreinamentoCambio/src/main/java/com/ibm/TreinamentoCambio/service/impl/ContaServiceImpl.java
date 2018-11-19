@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ibm.TreinamentoCambio.exception.ObjetoContaVazia;
 import com.ibm.TreinamentoCambio.exception.ObjetoNaoEncontradoException;
 import com.ibm.TreinamentoCambio.model.Conta;
 import com.ibm.TreinamentoCambio.repository.ContaRepository;
@@ -28,7 +29,7 @@ public class ContaServiceImpl implements ContaService {
 	@Override
 	public Conta criaConta(Conta conta) {
 		if(conta == null)
-			throw new  ObjetoNaoEncontradoException("Conta vazia");
+			throw new  ObjetoContaVazia("Conta vazia");
 	    return	contaRepository.save(conta);
 		
 	}
