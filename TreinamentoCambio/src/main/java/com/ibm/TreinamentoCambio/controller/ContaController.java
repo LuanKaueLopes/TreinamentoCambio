@@ -35,6 +35,10 @@ public class ContaController {
 	public String deleteConta(@PathVariable Long id) {
 		return contaService.deletarConta(id);
 	}
+	@RequestMapping(value="/moeda/{id}",method = RequestMethod.PUT)
+	public String getmoeda(@PathVariable Long id, @RequestBody Conta conta) {
+		 return contaService.changeCoin(id, conta.getMoeda());
+	}
 
 	@RequestMapping(value="/sacar/{id}",method = RequestMethod.PUT)
 	public String sacarConta(@PathVariable Long id, @RequestBody Conta conta) throws Exception {

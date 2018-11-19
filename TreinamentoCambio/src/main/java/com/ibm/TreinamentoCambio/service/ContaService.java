@@ -10,8 +10,8 @@ public interface ContaService {
 
 	String deletarConta(Long id);
 
-	String changeCoin(int id);
-
 	Conta sacarConta(Long id, Double value) throws Exception;
 
+	String changeCoin(Long id,String moeda);
+	
 }

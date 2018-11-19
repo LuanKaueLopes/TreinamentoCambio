@@ -15,6 +15,7 @@ import com.ibm.TreinamentoCambio.service.ContaService;
 public class ContaServiceImpl implements ContaService {
 
 	private ContaRepository contaRepository;
+	private CambioServiceImpl cambioService;
 
 	@Autowired
 	public ContaServiceImpl(ContaRepository contaRepository) {
@@ -47,16 +48,27 @@ public class ContaServiceImpl implements ContaService {
 		}
 
 	@Override
-	public String changeCoin(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	public String changeCoin(Long id,String moeda) {
+		Optional<Conta> contaOptinal = contaRepository.findById(id);
+		Conta conta = contaOptinal.get();
+		String ret = "";
+		if(moeda.equals("BRL")) {
+			if(conta.getMoeda().equals("USD")) {
+				ret = cambioService.fazCambioDolarToBrl(new Long(conta.getValue().longValue()));
+			}else
+				ret = cambioService.fazCambioEuroToBrl(new Long(conta.getValue().longValue()));
+		}
+		
+		conta.setValue(new Double(ret).doubleValue());
+		contaRepository.save(conta);
+		return conta.toString();
 	}
 
 	@Override
 	public String deletarConta(Long id) {
 
 		if (!contaRepository.existsById(id))
-			 throw new ObjetoNaoEncontradoException("Não foi encontrado nenhuma conta com esse id: " + id);
+			throw new ObjetoNaoEncontradoException("Não foi encontrado nenhuma conta com esse id: " + id);
 
 		contaRepository.deleteById(id);
 		return "conta deletada";
