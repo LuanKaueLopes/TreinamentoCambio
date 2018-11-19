@@ -8,5 +8,6 @@ public interface ContaService {
 	Conta criaConta(Conta conta);
 	String deletarConta(Long id);
 	String changeCoin(int id);
+	Conta sacarConta(Long id, Double value) throws Exception;
 	
 }
