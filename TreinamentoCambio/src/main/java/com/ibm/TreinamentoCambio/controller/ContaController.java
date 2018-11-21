@@ -47,7 +47,7 @@ public class ContaController {
 	
 	@RequestMapping(value ="/depositar/{id}",method = RequestMethod.PUT)
 	public String depositaConta(@PathVariable  Long id,@RequestBody Conta conta) throws Exception {
-		return ""+ contaService.depositaConta(id,conta.getValue());
+		return ""+ contaService.depositaConta(id,conta.getValue(),conta.getMoeda());
 	}
 	
 	

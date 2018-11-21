@@ -25,7 +25,7 @@ public class ContaServiceImpl implements ContaService {
 	}
 
 	@Override
-	public Conta buscaConta(Long id)  {
+	public Conta buscaConta(Long id) {
 		Optional<Conta> contaOptinal = contaRepository.findById(id);
 
 		return contaOptinal
@@ -40,48 +40,45 @@ public class ContaServiceImpl implements ContaService {
 	}
 
 	@Override
-	public Conta sacarConta(Long id, Double value,String moeda) throws Exception {
+	public Conta sacarConta(Long id, Double value, String moeda) throws Exception {
 		Optional<Conta> contaOptional = contaRepository.findById(id);
 		Conta conta = contaOptional.get();
 		String moedaOriginal = conta.getMoeda();
-		Double d=cambioUtil.changeValue(conta, moeda, cambioService);
-		if (d ==0) {
+		Double d = cambioUtil.changeValue(conta, moeda, cambioService);
+		if (d == 0) {
 			conta.setValue(conta.getValue() - value);
 			return contaRepository.save(conta);
-		}else if (d !=0) {
+		} else if (d != 0) {
 			conta.setValue(d - value);
 			conta.setMoeda(moeda);
 		}
-		    
-		d=cambioUtil.changeValue(conta, moedaOriginal, cambioService);
+
+		d = cambioUtil.changeValue(conta, moedaOriginal, cambioService);
 		conta.setValue(d);
 		conta.setMoeda(moedaOriginal);
-		return contaRepository.save(conta);	
-		}
+		return contaRepository.save(conta);
+	}
 
 	@Override
-	public String changeCoin(Long id,String moeda) {
+	public Conta depositaConta(Long id, Double value,String moeda) throws Exception {
+		Optional<Conta> contaOptional = contaRepository.findById(id);
+		Conta conta = contaOptional.get();
+		String moedaOriginal = conta.getMoeda();
+		Double d = cambioUtil.changeDeposit(conta, moeda, cambioService, value);
+		conta.setValue(d+conta.getValue());
+		return contaRepository.save(conta);
+	}
+
+	@Override
+	public String changeCoin(Long id, String moeda) {
 		Optional<Conta> contaOptinal = contaRepository.findById(id);
 		Conta conta = contaOptinal.get();
-		Double d=cambioUtil.changeValue(conta, moeda, cambioService);
-		if(d==0)
+		Double d = cambioUtil.changeValue(conta, moeda, cambioService);
+		if (d == 0)
 			return "moeda no mesmo valor da conta";
 		conta.setMoeda(moeda);
 		conta.setValue(d);
 		return contaRepository.save(conta).toString();
-	}
-	
-	@Override
-	public Conta depositaConta(Long id, Double value) throws Exception {
-		Optional <Conta> contaOptional = contaRepository.findById(id);
-		Conta conta = contaOptional.get();
-		if(conta.getValue()==null)
-			conta.setValue(value);
-		else
-		conta.setValue(conta.getValue() + value);
-		
-		return contaRepository.save(conta);
-		
 	}
 
 	@Override

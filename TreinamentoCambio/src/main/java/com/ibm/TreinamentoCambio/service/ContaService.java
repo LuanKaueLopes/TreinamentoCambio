@@ -10,7 +10,7 @@ public interface ContaService {
 
 	String deletarConta(Long id);
 
-	Conta depositaConta(Long id,Double value) throws Exception;
+	Conta depositaConta(Long id,Double value,String moeda) throws Exception;
 
 	Conta sacarConta(Long id, Double value,String moeda) throws Exception;
 

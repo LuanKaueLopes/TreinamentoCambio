@@ -20,5 +20,7 @@ public class Conta {
 	private String nome;
 	private String moeda;
 	private Double value;
+	private String agencia;
+	private String conta;
 
 }

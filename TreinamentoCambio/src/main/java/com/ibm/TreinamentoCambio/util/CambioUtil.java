@@ -48,5 +48,47 @@ public class CambioUtil {
 			return 0;
 		return value;
 	}
-
+	
+	public double changeDeposit (Conta conta,String moeda,CambioServiceImpl cambioService,Double value) {
+		String teste;
+		
+		if(conta.getMoeda().equals("BRL") && moeda != null) {
+			if(moeda.equals("USD")) {
+				teste =cambioService.fazCambioDolarToBrl(value.longValue());
+				teste = teste.replaceAll(",",".");
+				value = Double.parseDouble(teste);
+			}if (moeda.equals("EUR")) {
+				teste = cambioService.fazCambioEuroToBrl(value.longValue());
+				teste = teste.replaceAll(",",".");
+				value = Double.parseDouble(teste);
+			}
+		}
+		if(conta.getMoeda().equals("USD") && moeda != null) {
+			if(moeda.equals("EUR")) {
+				teste =cambioService.fazCambioDolarToEuro(value.longValue());
+				teste = teste.replaceAll(",",".");
+				value = Double.parseDouble(teste);
+			}if(moeda.equals("BRL")) {
+				teste = cambioService.fazCambioBrlToDolar(value.longValue());
+				teste = teste.replaceAll(",",".");
+				value = Double.parseDouble(teste);
+			}
+		} 
+		
+		if(conta.getMoeda().equals("EUR") && moeda != null) {
+			if(moeda.equals("USD")) {
+				teste =cambioService.fazCambioEuroToDolar(value.longValue());
+				teste = teste.replaceAll(",",".");
+				value = Double.parseDouble(teste);
+			}if(moeda.equals("BRL")) {
+				teste = cambioService.fazCambioEuroToBrl(value.longValue());
+				teste = teste.replaceAll(",",".");
+				value = Double.parseDouble(teste);
+			}
+		}
+		
+		if(value == null)
+			return 0;
+		return value;
+	}
 }
