@@ -7,7 +7,7 @@ import com.ibm.TreinamentoCambio.service.CambioService;
 @Service
 public class CambioServiceImpl implements CambioService{
 
-	public static final double DOLAR = 3.74;
+	public static final double DOLAR = 3.79;
 	public static final double EURO = 4.27;
 	
 	public String fazCambioBrlToDolar(Long value) {

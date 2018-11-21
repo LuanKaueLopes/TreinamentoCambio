@@ -40,11 +40,22 @@ public class ContaServiceImpl implements ContaService {
 	}
 
 	@Override
-	public Conta sacarConta(Long id, Double value) throws Exception {
+	public Conta sacarConta(Long id, Double value,String moeda) throws Exception {
 		Optional<Conta> contaOptional = contaRepository.findById(id);
 		Conta conta = contaOptional.get();
-		conta.setValue(conta.getValue() - value);
-		
+		String moedaOriginal = conta.getMoeda();
+		Double d=cambioUtil.changeValue(conta, moeda, cambioService);
+		if (d ==0) {
+			conta.setValue(conta.getValue() - value);
+			return contaRepository.save(conta);
+		}else if (d !=0) {
+			conta.setValue(d - value);
+			conta.setMoeda(moeda);
+		}
+		    
+		d=cambioUtil.changeValue(conta, moedaOriginal, cambioService);
+		conta.setValue(d);
+		conta.setMoeda(moedaOriginal);
 		return contaRepository.save(conta);	
 		}
 
