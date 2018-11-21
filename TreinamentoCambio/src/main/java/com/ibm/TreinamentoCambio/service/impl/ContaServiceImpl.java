@@ -90,7 +90,9 @@ public class ContaServiceImpl implements ContaService {
 				d = Double.parseDouble(teste);
 			}
 		}
-		
+		if(d == null) {
+			return "moeda passada é a mesma da conta aque abrc";
+		}
 		conta.setMoeda(moeda);
 		conta.setValue(d);
 		return contaRepository.save(conta).toString();
