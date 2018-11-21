@@ -2,8 +2,6 @@ package com.ibm.TreinamentoCambio.service.impl;
 
 import java.util.Optional;
 
-import javax.persistence.GeneratedValue;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +10,14 @@ import com.ibm.TreinamentoCambio.exception.ObjetoNaoEncontradoException;
 import com.ibm.TreinamentoCambio.model.Conta;
 import com.ibm.TreinamentoCambio.repository.ContaRepository;
 import com.ibm.TreinamentoCambio.service.ContaService;
-
-import ch.qos.logback.core.net.SyslogOutputStream;
+import com.ibm.TreinamentoCambio.util.CambioUtil;
 
 @Service
 public class ContaServiceImpl implements ContaService {
 
 	private ContaRepository contaRepository;
 	private CambioServiceImpl cambioService = new CambioServiceImpl();
+	CambioUtil cambioUtil = new CambioUtil();
 
 	@Autowired
 	public ContaServiceImpl(ContaRepository contaRepository) {
@@ -52,47 +50,11 @@ public class ContaServiceImpl implements ContaService {
 
 	@Override
 	public String changeCoin(Long id,String moeda) {
-		Double d=null;
-		String teste;
 		Optional<Conta> contaOptinal = contaRepository.findById(id);
 		Conta conta = contaOptinal.get();
-		if(moeda.equals("BRL") && moeda != null) {
-			if(conta.getMoeda().equals("USD")) {
-				teste =cambioService.fazCambioDolarToBrl(conta.getValue().longValue());
-				teste = teste.replaceAll(",",".");
-				d = Double.parseDouble(teste);
-			}if (conta.getMoeda().equals("EUR")) {
-				teste = cambioService.fazCambioEuroToBrl(conta.getValue().longValue());
-				teste = teste.replaceAll(",",".");
-				d = Double.parseDouble(teste);
-			}
-		}
-		if(moeda.equals("USD") && moeda != null) {
-			if(conta.getMoeda().equals("EUR")) {
-				teste =cambioService.fazCambioDolarToEuro(conta.getValue().longValue());
-				teste = teste.replaceAll(",",".");
-				d = Double.parseDouble(teste);
-			}if(conta.getMoeda().equals("BRL")) {
-				teste = cambioService.fazCambioBrlToDolar(conta.getValue().longValue());
-				teste = teste.replaceAll(",",".");
-				d = Double.parseDouble(teste);
-			}
-		} 
-		
-		if(moeda.equals("EUR") && moeda != null) {
-			if(conta.getMoeda().equals("USD")) {
-				teste =cambioService.fazCambioEuroToDolar(conta.getValue().longValue());
-				teste = teste.replaceAll(",",".");
-				d = Double.parseDouble(teste);
-			}if(conta.getMoeda().equals("BRL")) {
-				teste = cambioService.fazCambioEuroToBrl(conta.getValue().longValue());
-				teste = teste.replaceAll(",",".");
-				d = Double.parseDouble(teste);
-			}
-		}
-		if(d == null) {
-			return "moeda passada é a mesma da conta aque abrc";
-		}
+		Double d=cambioUtil.changeValue(conta, moeda, cambioService);
+		if(d==0)
+			return "moeda no mesmo valor da conta";
 		conta.setMoeda(moeda);
 		conta.setValue(d);
 		return contaRepository.save(conta).toString();
