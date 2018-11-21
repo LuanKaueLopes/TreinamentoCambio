@@ -73,7 +73,7 @@ public class ContaServiceImpl implements ContaService {
 				teste = teste.replaceAll(",",".");
 				d = Double.parseDouble(teste);
 			}if(conta.getMoeda().equals("BRL")) {
-				teste = cambioService.fazCambioDolarToBrl(conta.getValue().longValue());
+				teste = cambioService.fazCambioBrlToDolar(conta.getValue().longValue());
 				teste = teste.replaceAll(",",".");
 				d = Double.parseDouble(teste);
 			}
