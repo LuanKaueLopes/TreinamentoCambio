@@ -19,7 +19,7 @@ import ch.qos.logback.core.net.SyslogOutputStream;
 public class ContaServiceImpl implements ContaService {
 
 	private ContaRepository contaRepository;
-	private CambioServiceImpl cambioService;
+	private CambioServiceImpl cambioService = new CambioServiceImpl();
 
 	@Autowired
 	public ContaServiceImpl(ContaRepository contaRepository) {
@@ -52,26 +52,58 @@ public class ContaServiceImpl implements ContaService {
 
 	@Override
 	public String changeCoin(Long id,String moeda) {
+		Double d=null;
+		String teste;
 		Optional<Conta> contaOptinal = contaRepository.findById(id);
 		Conta conta = contaOptinal.get();
-		String ret = "";
-		if(moeda.equals("BRL")) {
+		if(moeda.equals("BRL") && moeda != null) {
 			if(conta.getMoeda().equals("USD")) {
-				ret = cambioService.fazCambioDolarToBrl(new Long(conta.getValue().longValue()));
-			}else
-				ret = cambioService.fazCambioEuroToBrl(new Long(conta.getValue().longValue()));
+				teste =cambioService.fazCambioDolarToBrl(conta.getValue().longValue());
+				teste = teste.replaceAll(",",".");
+				d = Double.parseDouble(teste);
+			}if (conta.getMoeda().equals("EUR")) {
+				teste = cambioService.fazCambioEuroToBrl(conta.getValue().longValue());
+				teste = teste.replaceAll(",",".");
+				d = Double.parseDouble(teste);
+			}
+		}
+		if(moeda.equals("USD") && moeda != null) {
+			if(conta.getMoeda().equals("EUR")) {
+				teste =cambioService.fazCambioDolarToEuro(conta.getValue().longValue());
+				teste = teste.replaceAll(",",".");
+				d = Double.parseDouble(teste);
+			}if(conta.getMoeda().equals("BRL")) {
+				teste = cambioService.fazCambioDolarToBrl(conta.getValue().longValue());
+				teste = teste.replaceAll(",",".");
+				d = Double.parseDouble(teste);
+			}
+		} 
+		
+		if(moeda.equals("EUR") && moeda != null) {
+			if(conta.getMoeda().equals("USD")) {
+				teste =cambioService.fazCambioEuroToDolar(conta.getValue().longValue());
+				teste = teste.replaceAll(",",".");
+				d = Double.parseDouble(teste);
+			}if(conta.getMoeda().equals("BRL")) {
+				teste = cambioService.fazCambioEuroToBrl(conta.getValue().longValue());
+				teste = teste.replaceAll(",",".");
+				d = Double.parseDouble(teste);
+			}
 		}
 		
-		conta.setValue(new Double(ret).doubleValue());
-		contaRepository.save(conta);
-		return conta.toString();
+		conta.setMoeda(moeda);
+		conta.setValue(d);
+		return contaRepository.save(conta).toString();
 	}
 	
 	@Override
 	public Conta depositaConta(Long id, Double value) throws Exception {
 		Optional <Conta> contaOptional = contaRepository.findById(id);
 		Conta conta = contaOptional.get();
-		conta.setValue(conta.getSaldo() + value);
+		if(conta.getValue()==null)
+			conta.setValue(value);
+		else
+		conta.setValue(conta.getValue() + value);
 		
 		return contaRepository.save(conta);
 		

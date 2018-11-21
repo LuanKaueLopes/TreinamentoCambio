@@ -20,6 +20,5 @@ public class Conta {
 	private String nome;
 	private String moeda;
 	private Double value;
-	private double saldo;
 
 }
