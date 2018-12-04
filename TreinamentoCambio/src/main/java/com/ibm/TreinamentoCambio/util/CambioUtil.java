@@ -1,11 +1,11 @@
 package com.ibm.TreinamentoCambio.util;
 
 import com.ibm.TreinamentoCambio.model.Conta;
-import com.ibm.TreinamentoCambio.service.impl.CambioServiceImpl;
+import com.ibm.TreinamentoCambio.service.CambioService;
 
 public class CambioUtil {
 	
-	public double changeValue(Conta conta,String moeda,CambioServiceImpl cambioService) {
+	public static double changeValue(Conta conta,String moeda,CambioService cambioService) {
 		Double value = null;
 		String teste;
 		
@@ -49,7 +49,7 @@ public class CambioUtil {
 		return value;
 	}
 	
-	public double changeDeposit (Conta conta,String moeda,CambioServiceImpl cambioService,Double value) {
+	public static double changeDeposit (Conta conta,String moeda,CambioService cambioService,Double value) {
 		String teste;
 		
 		if(conta.getMoeda().equals("BRL") && moeda != null) {

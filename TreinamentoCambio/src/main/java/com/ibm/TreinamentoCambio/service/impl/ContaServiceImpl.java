@@ -9,6 +9,7 @@ import com.ibm.TreinamentoCambio.exception.ObjetoContaVazia;
 import com.ibm.TreinamentoCambio.exception.ObjetoNaoEncontradoException;
 import com.ibm.TreinamentoCambio.model.Conta;
 import com.ibm.TreinamentoCambio.repository.ContaRepository;
+import com.ibm.TreinamentoCambio.service.CambioService;
 import com.ibm.TreinamentoCambio.service.ContaService;
 import com.ibm.TreinamentoCambio.util.CambioUtil;
 
@@ -16,12 +17,13 @@ import com.ibm.TreinamentoCambio.util.CambioUtil;
 public class ContaServiceImpl implements ContaService {
 
 	private ContaRepository contaRepository;
-	private CambioServiceImpl cambioService = new CambioServiceImpl();
+	private CambioService cambioService;
 	CambioUtil cambioUtil = new CambioUtil();
 
 	@Autowired
-	public ContaServiceImpl(ContaRepository contaRepository) {
+	public ContaServiceImpl(ContaRepository contaRepository, CambioService cambioService) {
 		this.contaRepository = contaRepository;
+		this.cambioService = cambioService;
 	}
 
 	@Override
@@ -44,7 +46,7 @@ public class ContaServiceImpl implements ContaService {
 		Optional<Conta> contaOptional = contaRepository.findById(id);
 		Conta conta = contaOptional.get();
 		String moedaOriginal = conta.getMoeda();
-		Double d = cambioUtil.changeValue(conta, moeda, cambioService);
+		Double d = CambioUtil.changeValue(conta, moeda, cambioService);
 		if (d == 0) {
 			conta.setValue(conta.getValue() - value);
 			return contaRepository.save(conta);
